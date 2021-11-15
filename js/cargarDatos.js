@@ -30,3 +30,18 @@ const cargarIngredientes = () => {
 };
 
 cargarIngredientes();
+
+// let restaurantes;
+// const cargarRestaurantes = (restaurantes) => {
+//   const xhr = new XMLHttpRequest();
+//   xhr.open("GET", "./server/restaurantes.json", true);
+//   xhr.onload = () => {
+//     if (xhr.status === 200) {
+//       restaurantes = JSON.parse(xhr.responseText);
+//     }
+//   };
+//   xhr.send();
+// };
+
+// cargarRestaurantes();
+// console.log(restaurantes);
