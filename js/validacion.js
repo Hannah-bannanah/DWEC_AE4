@@ -297,7 +297,7 @@ function validarEmail() {
 
 function validarMinIngredientes() {
   let valido = false;
-  const mensajeError = document.querySelector("#opciones-pizza p");
+  const mensajeError = document.querySelector("#opciones-pizza .mensaje-error");
 
   const ingredientesChkboxes = document.querySelectorAll(
     '#opciones-pizza input[type="checkbox"]'
