@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pide tu pizza</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="js/cargarDatos.js" defer></script>
+  <script src="./js/validacion.js" defer></script>
+  <script src="js/maps.js" defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy77yCKcWuIrbQ_aMazG-YHHkbw--1Cf4&callback=initMap"
+    async defer></script>
+
+
+</head>
+
+<body>
+  <form action="#" method="post">
+    <fieldset>
+      <legend class="form__titulo">Realizar Pedido</legend>
+      <fieldset id="contacto">
+        <legend>Introduce tus datos</legend>
+        <div class="fieldset-row">
+          <div class="fieldset-column">
+            <div class="inline-column"><label id="labelCon1" for="nombre">Nombre </label>
+              <input type="Text" id="nombre" placeholder="Nombre" required>
+              <p class="mensaje-error nombre-error"></p>
+
+            </div>
+            <div class="inline-column"><label id="labelCon3" for="apellidos">Apellidos </label>
+              <input type="Text" id="apellidos" placeholder="Apellidos" required>
+              <p class="mensaje-error apellidos-error"></p>
+
+            </div>
+          </div>
+          <div class="fieldset-column">
+            <div class="inline-column">
+              <label id="labelCon2" for="ConText2">Dirección </label>
+              <input type="Text" id="ConText2" name="direccion" placeholder="Dirección" maxlength="100" required>
+              <p class="mensaje-error direccion-error"></p>
+            </div>
+            <div class="inline-column">
+              <label for="telefono">Teléfono </label>
+              <input type="tel" id="telefono" name="telefono" placeholder="Telefono" required>
+              <p class="mensaje-error"></p>
+            </div>
+            <div class="inline-column">
+              <label for="email">Email </label>
+              <input type="email" id="email" name="email" placeholder="Email" required>
+              <p class="mensaje-error email-error"></p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset id="opciones-pizza">
+        <legend>¿Cómo te apetece la pizza?</legend>
+        <div class="fieldset-row">
+          <div class="fieldset-column" id="ingredientes">
+            <p>Elige los ingredientes</p>
+            <p class="mensaje-error"></p>
+          </div>
+          <div class="fieldset-column">
+            <img alt="pizza1" src="images/pizza1.jpg" width="200">
+          </div>
+        </div>
+        <div class="fieldset-row">
+          <div class="fieldset-column">
+
+            <label>Elige el tipo de masa</label>
+            <div class="inline-column">
+              <input type="radio" name="masa" id="radiobutton1" value="fina" required>
+              <label id="labelrb1" for="radiobutton1">Fina</label>
+            </div>
+            <div class="inline-column">
+              <input type="radio" name="masa" id="radiobutton2" value="normal">
+              <label id="labelrb2" for="radiobutton2">Normal</label>
+            </div>
+            <div class="inline-column">
+              <input type="radio" name="masa" id="radiobutton3" value="extra">
+              <label id="labelrb3" for="radiobutton3">Extra</label>
+            </div>
+            <div class="inline-column">
+              <input type="radio" name="masa" id="radiobutton4" value="extraqueso">
+              <label id="labelrb4" for="radiobutton4">Extra con queso</label>
+            </div>
+            <p class="mensaje-error error-masa"></p>
+          </div>
+          <div class="fieldset-column">
+            <label>Elige el tamaño</label>
+            <div class="inline-column">
+              <input type="radio" name="tamanio" id="radiobutton5" value="pequeña" required>
+              <label id="labelrb5" for="radiobutton5">Pequeña</label>
+            </div>
+            <div class="inline-column">
+              <input type="radio" name="tamanio" id="radiobutton6" value="mediana">
+              <label id="labelrb6" for="radiobutton6">Mediana</label>
+            </div>
+            <div class="inline-column">
+              <input type="radio" name="tamanio" id="radiobutton7" value="familiar">
+              <label id="labelrb7" for="radiobutton7">Grande</label>
+            </div>
+            <p class="mensaje-error error-tamanio"></p>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset id="pedido">
+        <legend>Sobre el pedido</legend>
+        <div class="fieldset-row">
+          <div class="fieldset-column">
+            <label for="restaurante">Elige un restaurante</label>
+            <select name="restaurante" id="restaurante" required>
+              <option value="">Elige un restaurante</option>
+              <option value="res1">La casina de Paulina</option>
+              <option value="res2">Ixchel's Hollywok</option>
+              <option value="res3">PizzalPilpilar</option>
+              <option value="res4">La Pizza Pagana de Jana</option>
+            </select>
+            <label for="textArea">Introduce aquí información sobre alergias u otras notas adicionales:</label>
+            <textarea id="textArea" cols="40" rows="4" placeholder="Escribe aquí:"></textarea>
+          </div>
+          <div class="fieldset-column map-container" id="googleMap">
+
+          </div>
+        </div>
+        <div class="fieldset-row">
+          <div class="fieldset-column inline-column">
+            <input type="checkbox" name="terminos" id="terminos" value="true" required>
+            <label for="terminos">Acepto los términos y condiciones</label>
+          </div>
+          <div class="fieldset-column">
+            <p class="mensaje-error terminos__error"></p>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset id="acciones">
+        <p id="info-precio" class="btn"></p>
+        <button type="submit" name="submit" id="submit" class="cta">Realizar Pedido</button>
+        <button type="reset" name="reset" id="reset">Borrar formulario</button>
+        <button type="button" name="refrescar" id="refrescar">Refrescar datos</button>
+      </fieldset>
+    </fieldset>
+  </form>
+</body>
+
+</html>

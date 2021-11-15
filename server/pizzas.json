@@ -1,0 +1,15 @@
+{
+  "tamanios": [
+    { "nombre": "Pequeña", "precio": 5 },
+    { "nombre": "Mediana", "precio": 10 },
+    { "nombre": "Grande", "precio": 15 }
+  ],
+  "masas": ["Fina", "Normal", "Extra", "Extra con queso"],
+  "ingredientes": [
+    "Pepperoni",
+    "Champiñones",
+    "Bacon",
+    "Tomates cherry",
+    "Pollo"
+  ]
+}

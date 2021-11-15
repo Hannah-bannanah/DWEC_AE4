@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+form {
+  width: 80%;
+  max-width: 70rem;
+  margin: 1rem auto;
+}
+
+fieldset {
+  width: 80%;
+  margin: 2rem auto;
+  border: none;
+  border-bottom: 1px solid #24cbd3;
+  padding-bottom: 2rem;
+}
+
+form fieldset:first-child {
+  border: 2px solid purple;
+}
+
+.form__titulo {
+  color: purple;
+  font-size: 1.2rem;
+}
+
+fieldset legend {
+  color: purple;
+  font-style: italic;
+}
+
+.fieldset-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fieldset-column {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 1rem;
+}
+
+.inline-column {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+input[type="radio"],
+input[type="checkbox"],
+select,
+input + label {
+  cursor: pointer;
+}
+
+label[for="textArea"] {
+  margin-top: 1rem;
+}
+
+#ingredientes p {
+  margin: 0;
+}
+
+#acciones {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+button {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem 1.5rem;
+  color: purple;
+  cursor: pointer;
+  border: 2px purple solid;
+  background: inherit;
+}
+
+button:hover,
+button:active {
+  color: white;
+  background-color: purple;
+}
+
+.cta {
+  font-weight: bold;
+  background: purple;
+  color: white;
+  border-color: purple;
+}
+
+.cta:active,
+.cta:hover {
+  background: white;
+  color: purple;
+}
+
+/* .validar:invalid {
+	background: #f8aaaa;
+	border: 1px solid #d60303;
+	outline:  1px solid #d60303;
+}
+
+input.validar:invalid {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width:0.8rem;
+	height: 0.8rem;
+	background: #f8aaaa;
+	border: 1px solid #d60303;
+	outline:  1px solid #d60303;
+}
+
+
+
+input[type="radio"].validar:invalid {
+	outline: none;
+	border-radius: 50%;
+} */
+
+#contacto .inline-column {
+  padding: 2%;
+}
+
+#info-precio {
+  color: purple;
+  border: 1px purple dashed;
+  padding: 1rem 1.5rem;
+  margin: 0;
+  display: none;
+}
+
+#info-precio.visible {
+  display: unset;
+}
+
+.mensaje-error {
+  font-family: "Courier New", Courier, monospace;
+  /* font-family: 'Times New Roman', Times, serif; */
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  margin: 3px;
+}
+
+/* input[type="text"].invalido,
+input[type="tel"].invalido,
+input[type="email"].invalido {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: 1px solid #d60303;
+	border: 1px solid #d60303;
+	border-radius: 2px;
+	background-color: #f8aaaa !important;
+} */
+
+.invalido {
+  background: #f8aaaa;
+  border: 1px solid #d60303;
+  outline: 1px solid #d60303;
+}
+
+input.invalido {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 1px solid #d60303;
+  border: 1px solid #d60303;
+  border-radius: 2px;
+  background-color: #f8aaaa;
+}
+
+input[type="checkbox"].invalido {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+input[type="radio"].invalido {
+  width: 10px;
+  height: 10px;
+  border-radius: 20px;
+}
