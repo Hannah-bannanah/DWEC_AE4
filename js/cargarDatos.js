@@ -1,11 +1,30 @@
+/**
+ * Funcion reutilizable para abrir un archivo y devolver los datos
+ * @param {*} method metodo http usado
+ * @param {*} path ruta al archivo
+ */
+export function enviarRequest(method, path) {
+  const promise = new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, path, true);
+    xhr.onload = function () {
+      if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
+      else reject(xhr.response);
+    };
+
+    xhr.send();
+  });
+  return promise;
+}
+
+/**
+ * funcion que carga los ingredientes en la lista de chekboxes
+ */
 const cargarIngredientes = () => {
-  const xhr = new XMLHttpRequest();
-  const ingredientesNode = document.getElementById("ingredientes");
-  xhr.open("GET", "./server/ingredientes.json", true);
-  xhr.onload = () => {
-    if (xhr.status === 200) {
-      const ingredientesPizza = JSON.parse(xhr.responseText);
-      ingredientesPizza.forEach((ingrediente) => {
+  enviarRequest("GET", "./server/ingredientes.json").then(
+    (listaIngredientes) => {
+      const ingredientesNode = document.getElementById("ingredientes");
+      listaIngredientes.forEach((ingrediente) => {
         const divWrapper = document.createElement("div");
         divWrapper.className = "inline-column";
         ingredientesNode.appendChild(divWrapper);
@@ -25,23 +44,7 @@ const cargarIngredientes = () => {
         divWrapper.appendChild(label);
       });
     }
-  };
-  xhr.send();
+  );
 };
 
 cargarIngredientes();
-
-// let restaurantes;
-// const cargarRestaurantes = (restaurantes) => {
-//   const xhr = new XMLHttpRequest();
-//   xhr.open("GET", "./server/restaurantes.json", true);
-//   xhr.onload = () => {
-//     if (xhr.status === 200) {
-//       restaurantes = JSON.parse(xhr.responseText);
-//     }
-//   };
-//   xhr.send();
-// };
-
-// cargarRestaurantes();
-// console.log(restaurantes);
