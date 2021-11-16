@@ -3,7 +3,7 @@
  * @param {*} method metodo http usado
  * @param {*} path ruta al archivo
  */
-export function enviarRequest(method, path) {
+function enviarRequest(method, path) {
   const promise = new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, path, true);
