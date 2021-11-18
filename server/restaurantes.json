@@ -1,22 +1,26 @@
 [
   {
     "nombre": "La casina de Paulina",
+    "id": "res1",
     "lat": 40.40628087645118,
     "long": -3.6691110581564477
   },
   {
     "lat": 40.44507556112844,
     "long": -3.699988648288108,
-    "nombre": "PizzalPilPilar"
+    "nombre": "PizzalPilPilar",
+    "id": "res3"
   },
   {
     "lat": 40.380508846347134,
     "long": -3.714923188115733,
+    "id": "res2",
     "nombre": "Ixchel's Hollywok"
   },
   {
     "lat": 40.422079139466184,
     "long": -3.6965554207415274,
+    "id": "res4",
     "nombre": "La Pizza Pagana de Jana"
   }
 ]
