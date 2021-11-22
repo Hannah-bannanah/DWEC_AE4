@@ -1,6 +1,6 @@
 [
   {
-    "nombre": "Mezcla de quesos",
+    "nombre": "Pimientos",
     "precio": 1
   },
   {
@@ -18,5 +18,6 @@
   {
     "nombre": "Pollo",
     "precio": 2
-  }
+  },
+  { "nombre": "Mezcla de quedos", "precio": 3 }
 ]

@@ -55,6 +55,12 @@ window.onload = function () {
   //validacion inmediata de los terminos y condiciones
   const terminos = document.getElementById("terminos");
   terminos.addEventListener("click", validarTerminos);
+
+  //recarga de la pagina a partir del boton de refrescar
+  const refrescar = document.getElementById("refrescar");
+  refrescar.addEventListener("click", () => {
+    location.reload();
+  });
 };
 
 /*
