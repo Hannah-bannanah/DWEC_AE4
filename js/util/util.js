@@ -16,3 +16,7 @@ export function enviarRequest(method, path) {
   });
   return promise;
 }
+
+export function getJQuery(path) {
+  return $.get(path);
+}
