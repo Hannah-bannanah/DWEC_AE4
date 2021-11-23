@@ -18,18 +18,16 @@ const cargarIngredientes = () => {
         //generamos un id (el nombre del ingrediente sin espacios)
         const idIng = `ing-${ingrediente.nombre.split(" ").join("")}`;
 
-        //creamos el checkbox
-        const chkbox = $("<input>");
-        chkbox.attr("type", "checkbox"); //usamos att() en vez de setAttribute()
-        chkbox.attr("id", idIng);
-        chkbox.attr("name", idIng);
-        chkbox.attr("value", "true");
+        const chkbox = $(
+          `<input type="checkbox" id = ${idIng} name = ${idIng} value ="true">`
+        ); //definimos los attributos en la creacion en vez de aniadirlos al nodo uno a uno
+
         //situamos el checkbox en el documento
         divWrapper.append(chkbox); //usamos append() en vez de appendChild()
 
         //creamos la label
         const label = $("<label>");
-        label.attr("for", idIng);
+        label.attr("for", idIng); //usamos attr() en vez de setAttribute()
         label.text(ingrediente.nombre); //usamos text() en vez de textContent
         //situamos la label en el documento
         divWrapper.append(label);
