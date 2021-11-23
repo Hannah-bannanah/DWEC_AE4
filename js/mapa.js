@@ -75,7 +75,6 @@ function restauranteClickHandler() {
  * @param {} nombre nombre del restaurante
  */
 const seleccionarRestaurante = (nombre) => {
-  console.log("nombre", nombre);
   const restaurante = listaRestaurantes.filter(
     (rest) => rest.nombre === nombre
   )[0]; //filtramos por nombre y cogemos el primer elemento del array filtrado
