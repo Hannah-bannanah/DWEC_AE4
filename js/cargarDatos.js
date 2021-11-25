@@ -3,12 +3,12 @@ import { enviarRequest } from "./util/util.js";
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
  */
-export const cargarIngredientes = async () => {
+export const cargarIngredientes = (listaIngredientes) => {
   //cargamos la lista de ingredientes del servidor
-  const listaIngredientes = await enviarRequest(
-    "GET",
-    "../server/ingredientes.json"
-  );
+  // const listaIngredientes = await enviarRequest(
+  //   "GET",
+  //   "../server/ingredientes.json"
+  // );
 
   // iteramos por la lista de ingredientes, generando los elementos
   // en la seccion de ingredientes del html
@@ -41,9 +41,9 @@ export const cargarIngredientes = async () => {
 
 // cargarIngredientes();
 
-export const cargarMasas = async () => {
+export const cargarMasas = (pizzas) => {
   //cargamos la lista de masas del servidor
-  const pizzas = await enviarRequest("GET", "../server/pizzas.json");
+  // const pizzas = await enviarRequest("GET", "../server/pizzas.json");
   const listaMasa = pizzas.masas;
   const masaNode = document.getElementById("masa");
   listaMasa.forEach((masas) => {
@@ -73,9 +73,9 @@ export const cargarMasas = async () => {
 
 // cargarMasas();
 
-export const cargarTamanios = async () => {
+export const cargarTamanios = (pizzas) => {
   //cargamos la lista de tamaños del servidor
-  const pizzas = await enviarRequest("GET", "../server/pizzas.json");
+  // const pizzas = await enviarRequest("GET", "../server/pizzas.json");
   const listaTamanios = pizzas.tamanios;
   const tamaniosNode = document.getElementById("tamanio");
   listaTamanios.forEach((tamanios) => {

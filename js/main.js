@@ -2,23 +2,20 @@ import {
   cargarIngredientes,
   cargarMasas,
   cargarTamanios,
-} from "./cargarDatos.js";
-import { enviarRequest } from "./util/util.js";
+} from "./cargarDatos.js"; // funciones que rellenaran el html con la informacion del servidor
+import { enviarRequest } from "./util/util.js"; //funcion que envia una request y recibe la response
 
 /* 
-  definimos las variables donde recogeremos la informacion relevante para calcular el precio fuera de la funcion
+  definimos las variables donde recogeremos la informacion relevante a nivel global
   para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
   modifica la seleccion). La recogida de informacion se ejecutara cada vez que se ejecute el
   script (en este caso, cada vez que se recarga la pagina)
 */
 let infoPizza;
 let ingredientes;
-// const infoPizza = await enviarRequest("GET", "../server/pizzas.json");
-// console.log(infoPizza);
-// const ingredientes = await enviarRequest("GET", "../server/ingredientes.json");
 
 window.onload = function () {
-  // llamamos a las funciones para rellenar los distintos elementos html antes de asignar los event listeners
+  // recogemos la informacion del servidor
   enviarRequest("GET", "../server/ingredientes.json") //recogemos ingredientes
     .then((response) => {
       ingredientes = response;
@@ -27,9 +24,10 @@ window.onload = function () {
     .then((response) => {
       infoPizza = response;
     })
-    .then(cargarIngredientes) //cargamos lista de ingredientes
-    .then(cargarMasas) //cargamos masas de pizza
-    .then(cargarTamanios) //cargamos tamanios de pizza
+    // llamamos a las funciones para rellenar los distintos elementos html antes de asignar los event listeners
+    .then(() => cargarIngredientes(ingredientes)) //cargamos lista de ingredientes
+    .then(() => cargarMasas(infoPizza)) //cargamos masas de pizza
+    .then(() => cargarTamanios(infoPizza)) //cargamos tamanios de pizza
     .then(() => {
       // asignamos los event listeners
       //event listeners
