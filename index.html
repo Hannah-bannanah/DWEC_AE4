@@ -8,8 +8,8 @@
   <title>Pide tu pizza</title>
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- <script src="js/cargarDatos.js" type="module" defer></script> -->
-  <script src="js/cargarDatos.jquery.js" type="module" defer></script>
+  <script src="js/cargarDatos.js" type="module" defer></script> 
+  <!--<script src="js/cargarDatos.jquery.js" type="module" defer></script>-->
   <script src="./js/main.js" defer></script>
   <script src="./js/mapa.js" defer></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy77yCKcWuIrbQ_aMazG-YHHkbw--1Cf4&callback=initMap"
@@ -72,8 +72,8 @@
           <div class="fieldset-column">
 
             <label>Elige el tipo de masa</label>
-            <div class="inline-column">
-              <input type="radio" name="masa" id="radiobutton1" value="fina" required>
+            <div class="inline-column" id=masa>
+              <!--<input type="radio" name="masa" id="radiobutton1" value="fina" required>
               <label id="labelrb1" for="radiobutton1">Fina</label>
             </div>
             <div class="inline-column">
@@ -87,13 +87,13 @@
             <div class="inline-column">
               <input type="radio" name="masa" id="radiobutton4" value="extraqueso">
               <label id="labelrb4" for="radiobutton4">Extra con queso</label>
-            </div>
+            </div>-->
             <p class="mensaje-error error-masa"></p>
           </div>
           <div class="fieldset-column">
             <label>Elige el tamaño</label>
-            <div class="inline-column">
-              <input type="radio" name="tamanio" id="radiobutton5" value="pequeña" required>
+            <div class="inline-column" id=tamanio>
+ <!--             <input type="radio" name="tamanio" id="radiobutton5" value="pequeña" required>
               <label id="labelrb5" for="radiobutton5">Pequeña</label>
             </div>
             <div class="inline-column">
@@ -104,7 +104,8 @@
               <input type="radio" name="tamanio" id="radiobutton7" value="familiar">
               <label id="labelrb7" for="radiobutton7">Grande</label>
             </div>
-            <p class="mensaje-error error-tamanio"></p>
+          -->           
+          <p class="mensaje-error error-tamanio"></p>
           </div>
         </div>
       </fieldset>
