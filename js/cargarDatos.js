@@ -3,7 +3,7 @@ import { enviarRequest } from "./util/util.js";
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
  */
-const cargarIngredientes = async () => {
+export const cargarIngredientes = async () => {
   //cargamos la lista de ingredientes del servidor
   const listaIngredientes = await enviarRequest(
     "GET",
@@ -25,7 +25,7 @@ const cargarIngredientes = async () => {
     const chkbox = document.createElement("input");
     chkbox.setAttribute("type", "checkbox");
     chkbox.setAttribute("id", idIng);
-    chkbox.setAttribute("name", idIng);
+    chkbox.setAttribute("name", ingrediente.nombre.split(" ").join(""));
     chkbox.setAttribute("value", "true");
     //situamos el checkbox en el documento
     divWrapper.appendChild(chkbox);
@@ -39,18 +39,14 @@ const cargarIngredientes = async () => {
   });
 };
 
-cargarIngredientes();
+// cargarIngredientes();
 
-const cargarMasas = async () => {
+export const cargarMasas = async () => {
   //cargamos la lista de masas del servidor
-  const pizzas = await enviarRequest(
-    "GET",
-    "../server/pizzas.json"
-  );
-  const listaMasa =pizzas.masas;
+  const pizzas = await enviarRequest("GET", "../server/pizzas.json");
+  const listaMasa = pizzas.masas;
   const masaNode = document.getElementById("masa");
   listaMasa.forEach((masas) => {
-    
     const divWrapper = document.createElement("div");
     divWrapper.className = "inline-column";
     masaNode.appendChild(divWrapper);
@@ -75,18 +71,14 @@ const cargarMasas = async () => {
   });
 };
 
-cargarMasas();
+// cargarMasas();
 
-const cargarTamanios = async () => {
+export const cargarTamanios = async () => {
   //cargamos la lista de tamaños del servidor
-  const pizzas = await enviarRequest(
-    "GET",
-    "../server/pizzas.json"
-  ); 
+  const pizzas = await enviarRequest("GET", "../server/pizzas.json");
   const listaTamanios = pizzas.tamanios;
   const tamaniosNode = document.getElementById("tamanio");
   listaTamanios.forEach((tamanios) => {
-    
     const divWrapper = document.createElement("div");
     divWrapper.className = "inline-column";
     tamaniosNode.appendChild(divWrapper);
@@ -98,7 +90,7 @@ const cargarTamanios = async () => {
     rdio.setAttribute("type", "radio");
     rdio.setAttribute("id", idTam);
     rdio.setAttribute("name", "tamanios");
-    rdio.setAttribute("value", tamanios);
+    rdio.setAttribute("value", tamanios.nombre);
     //situamos los radiobuttons en el documento
     divWrapper.appendChild(rdio);
 
@@ -111,4 +103,4 @@ const cargarTamanios = async () => {
   });
 };
 
-cargarTamanios();
+// cargarTamanios();
