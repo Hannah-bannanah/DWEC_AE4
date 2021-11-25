@@ -1,66 +1,100 @@
+import {
+  cargarIngredientes,
+  cargarMasas,
+  cargarTamanios,
+} from "./cargarDatos.js";
+import { enviarRequest } from "./util/util.js";
+
+/* 
+  definimos las variables donde recogeremos la informacion relevante para calcular el precio fuera de la funcion
+  para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
+  modifica la seleccion). La recogida de informacion se ejecutara cada vez que se ejecute el
+  script (en este caso, cada vez que se recarga la pagina)
+*/
+let infoPizza;
+let ingredientes;
+// const infoPizza = await enviarRequest("GET", "../server/pizzas.json");
+// console.log(infoPizza);
+// const ingredientes = await enviarRequest("GET", "../server/ingredientes.json");
+
 window.onload = function () {
-  //event listeners
-  submit.addEventListener("click", validarFormulario); //validacion del formulario completo
+  // llamamos a las funciones para rellenar los distintos elementos html antes de asignar los event listeners
+  enviarRequest("GET", "../server/ingredientes.json") //recogemos ingredientes
+    .then((response) => {
+      ingredientes = response;
+    })
+    .then(() => enviarRequest("GET", "../server/pizzas.json")) //recogemos infoPizza
+    .then((response) => {
+      infoPizza = response;
+    })
+    .then(cargarIngredientes) //cargamos lista de ingredientes
+    .then(cargarMasas) //cargamos masas de pizza
+    .then(cargarTamanios) //cargamos tamanios de pizza
+    .then(() => {
+      // asignamos los event listeners
+      //event listeners
+      submit.addEventListener("click", validarFormulario); //validacion del formulario completo
 
-  //validacion inmediata de nombre
-  nombre.addEventListener("keyup", validarNombre);
+      //validacion inmediata de nombre
+      nombre.addEventListener("keyup", validarNombre);
 
-  //validacion inmediata de apellidos
-  apellidos.addEventListener("keyup", validarApellidos);
+      //validacion inmediata de apellidos
+      apellidos.addEventListener("keyup", validarApellidos);
 
-  //validacion inmediata de la direccion
-  ConText2.addEventListener("keyup", function () {
-    var direccion = document.getElementById("ConText2");
-    var mensajeErrorDireccion = document.querySelector(".direccion-error");
-    if (direccion.classList.contains("invalido")) {
-      direccion.classList.remove("invalido");
-      mensajeErrorDireccion.textContent = "";
-    }
-  });
+      //validacion inmediata de la direccion
+      ConText2.addEventListener("keyup", function () {
+        var direccion = document.getElementById("ConText2");
+        var mensajeErrorDireccion = document.querySelector(".direccion-error");
+        if (direccion.classList.contains("invalido")) {
+          direccion.classList.remove("invalido");
+          mensajeErrorDireccion.textContent = "";
+        }
+      });
 
-  //validacion inmediata del telefono
-  telefono.addEventListener("keyup", validarTlf);
+      //validacion inmediata del telefono
+      telefono.addEventListener("keyup", validarTlf);
 
-  //validacion inmediata del email
-  email.addEventListener("keyup", validarEmail);
+      //validacion inmediata del email
+      email.addEventListener("keyup", validarEmail);
 
-  // validacion inmediata del minimo de ingredientes
-  //y actualizacion del precio
-  const ingredientesChkboxes = document.querySelectorAll(
-    '#opciones-pizza input[type="checkbox"]'
-  );
-  ingredientesChkboxes.forEach((chkbox) => {
-    chkbox.addEventListener("change", validarMinIngredientes);
-    chkbox.onchange = calcularPrecio;
-  });
+      // validacion inmediata del minimo de ingredientes
+      //y actualizacion del precio
+      const ingredientesChkboxes = document.querySelectorAll(
+        '#opciones-pizza input[type="checkbox"]'
+      );
+      ingredientesChkboxes.forEach((chkbox) => {
+        chkbox.addEventListener("change", validarMinIngredientes);
+        chkbox.onchange = calcularPrecio;
+      });
 
-  //validacion inmediata de los radio button MASA
-  const masaRadioButton = document.getElementsByName("masa");
-  for (var i = 0; i < masaRadioButton.length; i++) {
-    masaRadioButton[i].addEventListener("click", validarMasa);
-  }
+      //validacion inmediata de los radio button MASA
+      const masaRadioButton = document.getElementsByName("masas");
+      for (var i = 0; i < masaRadioButton.length; i++) {
+        masaRadioButton[i].addEventListener("click", validarMasa);
+      }
 
-  //validacion inmediata de los radio button TAMANIO
-  //y actualizacion del precio
+      //validacion inmediata de los radio button TAMANIO
+      //y actualizacion del precio
 
-  const tamanioRadioButton = document.getElementsByName("tamanio");
-  for (var i = 0; i < tamanioRadioButton.length; i++) {
-    tamanioRadioButton[i].addEventListener("click", validarTamanio);
-    tamanioRadioButton[i].onchange = calcularPrecio;
-  }
+      const tamanioRadioButton = document.getElementsByName("tamanios");
+      for (var i = 0; i < tamanioRadioButton.length; i++) {
+        tamanioRadioButton[i].addEventListener("click", validarTamanio);
+        tamanioRadioButton[i].onchange = calcularPrecio;
+      }
 
-  // validacion inmediata de seleccion de restaurante
-  restaurante.addEventListener("change", validarRestaurante); //valida cada vez que cambia la seleccion
+      // validacion inmediata de seleccion de restaurante
+      restaurante.addEventListener("change", validarRestaurante); //valida cada vez que cambia la seleccion
 
-  //validacion inmediata de los terminos y condiciones
-  const terminos = document.getElementById("terminos");
-  terminos.addEventListener("click", validarTerminos);
+      //validacion inmediata de los terminos y condiciones
+      const terminos = document.getElementById("terminos");
+      terminos.addEventListener("click", validarTerminos);
 
-  //recarga de la pagina a partir del boton de refrescar
-  const refrescar = document.getElementById("refrescar");
-  refrescar.addEventListener("click", () => {
-    location.reload();
-  });
+      //recarga de la pagina a partir del boton de refrescar
+      const refrescar = document.getElementById("refrescar");
+      refrescar.addEventListener("click", () => {
+        location.reload();
+      });
+    });
 };
 
 /*
@@ -344,7 +378,7 @@ function validarMinIngredientes() {
 function validarMasa() {
   let valido = false;
   const mensajeErrorMasa = document.querySelector(".error-masa");
-  const masaRadioButton = document.getElementsByName("masa");
+  const masaRadioButton = document.getElementsByName("masas");
 
   // Iteramos por los radio button para ver si alguno esta marcado
   for (var i = 0; i < masaRadioButton.length; i++) {
@@ -377,7 +411,7 @@ function validarMasa() {
 function validarTamanio() {
   let valido = false;
   const mensajeErrorTamanio = document.querySelector(".error-tamanio");
-  const tamanioRadioButton = document.getElementsByName("tamanio");
+  const tamanioRadioButton = document.getElementsByName("tamanios");
 
   // Iteramos por los radio button para ver si alguno esta marcado
   for (var i = 0; i < tamanioRadioButton.length; i++) {
@@ -459,27 +493,23 @@ function calcularPrecio() {
   let precio = 0;
 
   //calculamos el precio del tamanio elegido
-  const tamanio = document.querySelector('input[name="tamanio"]:checked');
-  const tamanioACobrar = tamanio === null ? "vacio" : tamanio.value; //para lidiar con el precio antes de que el usuario seleccione tamanio
-  switch (tamanioACobrar) {
-    case "pequeña":
-      precio += 5;
-      break;
-    case "mediana":
-      precio += 10;
-      break;
-    case "familiar":
-      precio += 15;
-      break;
-    default:
-      precio += 0;
-  }
+  const tamanioElegido = document.querySelector(
+    'input[name="tamanios"]:checked'
+  );
+  if (tamanioElegido != null)
+    precio += infoPizza.tamanios.find(
+      (tam) => tam.nombre === tamanioElegido.value //buscamos el tamanio cuyo nombre coincide con el elegido
+    ).precio;
 
   //calculamos el precio de los ingredientes
-  const ingredientes = document.querySelectorAll(
+  const ingredientesElegidos = document.querySelectorAll(
     '#opciones-pizza input[type="checkbox"]:checked'
   );
-  ingredientes.forEach((ing) => (precio += 1));
+  ingredientesElegidos.forEach((ingElegido) => {
+    precio += ingredientes.find(
+      (ing) => ing.nombre.split(" ").join("") === ingElegido.name
+    ).precio;
+  });
 
   //actualizamos el precio mostrado
   const infoPrecio = document.getElementById("info-precio");
