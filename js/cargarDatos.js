@@ -1,15 +1,26 @@
 import { enviarRequest } from "./util/util.js";
 
+/* 
+  definimos las variables donde recogeremos la informacion relevante a nivel global
+  para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
+  modifica la seleccion). La recogida de informacion se ejecutara cada vez que se ejecute el
+  script (en este caso, cada vez que se recarga la pagina)
+*/
+let infoPizza;
+let ingredientes;
+
+export const cargarDatos = async () => {
+  infoPizza = await enviarRequest("GET", "../server/pizzas.json");
+  ingredientes = await enviarRequest("GET", "../server/ingredientes.json");
+  cargarIngredientes(ingredientes);
+  cargarMasas(infoPizza.masas);
+  cargarTamanios(infoPizza.tamanios);
+  return;
+};
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
  */
-export const cargarIngredientes = (listaIngredientes) => {
-  //cargamos la lista de ingredientes del servidor
-  // const listaIngredientes = await enviarRequest(
-  //   "GET",
-  //   "../server/ingredientes.json"
-  // );
-
+const cargarIngredientes = (listaIngredientes) => {
   // iteramos por la lista de ingredientes, generando los elementos
   // en la seccion de ingredientes del html
   const ingredientesNode = document.getElementById("ingredientes");
@@ -39,12 +50,8 @@ export const cargarIngredientes = (listaIngredientes) => {
   });
 };
 
-// cargarIngredientes();
-
-export const cargarMasas = (pizzas) => {
+const cargarMasas = (listaMasa) => {
   //cargamos la lista de masas del servidor
-  // const pizzas = await enviarRequest("GET", "../server/pizzas.json");
-  const listaMasa = pizzas.masas;
   const masaNode = document.getElementById("masa");
   listaMasa.forEach((masas) => {
     const divWrapper = document.createElement("div");
@@ -71,12 +78,7 @@ export const cargarMasas = (pizzas) => {
   });
 };
 
-// cargarMasas();
-
-export const cargarTamanios = (pizzas) => {
-  //cargamos la lista de tamaños del servidor
-  // const pizzas = await enviarRequest("GET", "../server/pizzas.json");
-  const listaTamanios = pizzas.tamanios;
+const cargarTamanios = (listaTamanios) => {
   const tamaniosNode = document.getElementById("tamanio");
   listaTamanios.forEach((tamanios) => {
     const divWrapper = document.createElement("div");
@@ -103,4 +105,39 @@ export const cargarTamanios = (pizzas) => {
   });
 };
 
-// cargarTamanios();
+/*
+ *============= CALCULO DE PRECIO =============
+ */
+/**
+ * Funcion que calcula el precio de la pizza segun
+ * la cantidad de ingredientes y el tamanio elegidos
+ * @returns el precio
+ */
+export function calcularPrecio() {
+  let precio = 0;
+  //calculamos el precio del tamanio elegido
+  const tamanioElegido = document.querySelector(
+    'input[name="tamanios"]:checked'
+  );
+  if (tamanioElegido != null)
+    precio += infoPizza.tamanios.find(
+      (tam) => tam.nombre === tamanioElegido.value //buscamos el tamanio cuyo nombre coincide con el elegido
+    ).precio;
+
+  //calculamos el precio de los ingredientes
+  const ingredientesElegidos = document.querySelectorAll(
+    '#opciones-pizza input[type="checkbox"]:checked'
+  );
+  ingredientesElegidos.forEach((ingElegido) => {
+    precio += ingredientes.find(
+      (ing) => ing.nombre.split(" ").join("") === ingElegido.name
+    ).precio;
+  });
+
+  //actualizamos el precio mostrado
+  const infoPrecio = document.getElementById("info-precio");
+  infoPrecio.textContent = `Precio: ${precio}\u20AC`;
+  infoPrecio.classList.add("visible");
+
+  return precio;
+}

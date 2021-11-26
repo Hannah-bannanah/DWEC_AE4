@@ -1,98 +1,73 @@
-import {
-  cargarIngredientes,
-  cargarMasas,
-  cargarTamanios,
-} from "./cargarDatos.js"; // funciones que rellenaran el html con la informacion del servidor
-import { enviarRequest } from "./util/util.js"; //funcion que envia una request y recibe la response
-
-/* 
-  definimos las variables donde recogeremos la informacion relevante a nivel global
-  para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
-  modifica la seleccion). La recogida de informacion se ejecutara cada vez que se ejecute el
-  script (en este caso, cada vez que se recarga la pagina)
-*/
-let infoPizza;
-let ingredientes;
+// import { cargarDatos, calcularPrecio } from "./cargarDatos.js"; // funciones que rellenaran el html con la informacion del servidor
+import { cargarDatos, calcularPrecio } from "./cargarDatos.jquery.js"; // funciones que rellenaran el html con la informacion del servidor
 
 window.onload = function () {
-  // recogemos la informacion del servidor
-  enviarRequest("GET", "../server/ingredientes.json") //recogemos ingredientes
-    .then((response) => {
-      ingredientes = response;
-    })
-    .then(() => enviarRequest("GET", "../server/pizzas.json")) //recogemos infoPizza
-    .then((response) => {
-      infoPizza = response;
-    })
-    // llamamos a las funciones para rellenar los distintos elementos html antes de asignar los event listeners
-    .then(() => cargarIngredientes(ingredientes)) //cargamos lista de ingredientes
-    .then(() => cargarMasas(infoPizza)) //cargamos masas de pizza
-    .then(() => cargarTamanios(infoPizza)) //cargamos tamanios de pizza
-    .then(() => {
-      // asignamos los event listeners
-      //event listeners
-      submit.addEventListener("click", validarFormulario); //validacion del formulario completo
+  // cargamos la pagina con los datos del servidor antes
+  // de establecer los event listeners
+  cargarDatos().then(() => {
+    // asignamos los event listeners
+    submit.addEventListener("click", validarFormulario); //validacion del formulario completo
 
-      //validacion inmediata de nombre
-      nombre.addEventListener("keyup", validarNombre);
+    //validacion inmediata de nombre
+    nombre.addEventListener("keyup", validarNombre);
 
-      //validacion inmediata de apellidos
-      apellidos.addEventListener("keyup", validarApellidos);
+    //validacion inmediata de apellidos
+    apellidos.addEventListener("keyup", validarApellidos);
 
-      //validacion inmediata de la direccion
-      ConText2.addEventListener("keyup", function () {
-        var direccion = document.getElementById("ConText2");
-        var mensajeErrorDireccion = document.querySelector(".direccion-error");
-        if (direccion.classList.contains("invalido")) {
-          direccion.classList.remove("invalido");
-          mensajeErrorDireccion.textContent = "";
-        }
-      });
-
-      //validacion inmediata del telefono
-      telefono.addEventListener("keyup", validarTlf);
-
-      //validacion inmediata del email
-      email.addEventListener("keyup", validarEmail);
-
-      // validacion inmediata del minimo de ingredientes
-      //y actualizacion del precio
-      const ingredientesChkboxes = document.querySelectorAll(
-        '#opciones-pizza input[type="checkbox"]'
-      );
-      ingredientesChkboxes.forEach((chkbox) => {
-        chkbox.addEventListener("change", validarMinIngredientes);
-        chkbox.onchange = calcularPrecio;
-      });
-
-      //validacion inmediata de los radio button MASA
-      const masaRadioButton = document.getElementsByName("masas");
-      for (var i = 0; i < masaRadioButton.length; i++) {
-        masaRadioButton[i].addEventListener("click", validarMasa);
+    //validacion inmediata de la direccion
+    ConText2.addEventListener("keyup", function () {
+      var direccion = document.getElementById("ConText2");
+      var mensajeErrorDireccion = document.querySelector(".direccion-error");
+      if (direccion.classList.contains("invalido")) {
+        direccion.classList.remove("invalido");
+        mensajeErrorDireccion.textContent = "";
       }
-
-      //validacion inmediata de los radio button TAMANIO
-      //y actualizacion del precio
-
-      const tamanioRadioButton = document.getElementsByName("tamanios");
-      for (var i = 0; i < tamanioRadioButton.length; i++) {
-        tamanioRadioButton[i].addEventListener("click", validarTamanio);
-        tamanioRadioButton[i].onchange = calcularPrecio;
-      }
-
-      // validacion inmediata de seleccion de restaurante
-      restaurante.addEventListener("change", validarRestaurante); //valida cada vez que cambia la seleccion
-
-      //validacion inmediata de los terminos y condiciones
-      const terminos = document.getElementById("terminos");
-      terminos.addEventListener("click", validarTerminos);
-
-      //recarga de la pagina a partir del boton de refrescar
-      const refrescar = document.getElementById("refrescar");
-      refrescar.addEventListener("click", () => {
-        location.reload();
-      });
     });
+
+    //validacion inmediata del telefono
+    telefono.addEventListener("keyup", validarTlf);
+
+    //validacion inmediata del email
+    email.addEventListener("keyup", validarEmail);
+
+    // validacion inmediata del minimo de ingredientes
+    //y actualizacion del precio
+    const ingredientesChkboxes = document.querySelectorAll(
+      '#opciones-pizza input[type="checkbox"]'
+    );
+    ingredientesChkboxes.forEach((chkbox) => {
+      chkbox.addEventListener("change", validarMinIngredientes);
+      chkbox.onchange = calcularPrecio;
+    });
+
+    //validacion inmediata de los radio button MASA
+    const masaRadioButton = document.getElementsByName("masas");
+    for (var i = 0; i < masaRadioButton.length; i++) {
+      masaRadioButton[i].addEventListener("click", validarMasa);
+    }
+
+    //validacion inmediata de los radio button TAMANIO
+    //y actualizacion del precio
+
+    const tamanioRadioButton = document.getElementsByName("tamanios");
+    for (var i = 0; i < tamanioRadioButton.length; i++) {
+      tamanioRadioButton[i].addEventListener("click", validarTamanio);
+      tamanioRadioButton[i].onchange = calcularPrecio;
+    }
+
+    // validacion inmediata de seleccion de restaurante
+    restaurante.addEventListener("change", validarRestaurante); //valida cada vez que cambia la seleccion
+
+    //validacion inmediata de los terminos y condiciones
+    const terminos = document.getElementById("terminos");
+    terminos.addEventListener("click", validarTerminos);
+
+    //recarga de la pagina a partir del boton de refrescar
+    const refrescar = document.getElementById("refrescar");
+    refrescar.addEventListener("click", () => {
+      location.reload();
+    });
+  });
 };
 
 /*
@@ -477,42 +452,4 @@ function validarTerminos() {
   }
 
   return terminos.checked;
-}
-
-/*
- *============= CALCULO DE PRECIO =============
- */
-/**
- * Funcion que calcula el precio de la pizza segun
- * la cantidad de ingredientes y el tamanio elegidos
- * @returns el precio
- */
-function calcularPrecio() {
-  let precio = 0;
-
-  //calculamos el precio del tamanio elegido
-  const tamanioElegido = document.querySelector(
-    'input[name="tamanios"]:checked'
-  );
-  if (tamanioElegido != null)
-    precio += infoPizza.tamanios.find(
-      (tam) => tam.nombre === tamanioElegido.value //buscamos el tamanio cuyo nombre coincide con el elegido
-    ).precio;
-
-  //calculamos el precio de los ingredientes
-  const ingredientesElegidos = document.querySelectorAll(
-    '#opciones-pizza input[type="checkbox"]:checked'
-  );
-  ingredientesElegidos.forEach((ingElegido) => {
-    precio += ingredientes.find(
-      (ing) => ing.nombre.split(" ").join("") === ingElegido.name
-    ).precio;
-  });
-
-  //actualizamos el precio mostrado
-  const infoPrecio = document.getElementById("info-precio");
-  infoPrecio.textContent = `Precio: ${precio}\u20AC`;
-  infoPrecio.classList.add("visible");
-
-  return precio;
 }
