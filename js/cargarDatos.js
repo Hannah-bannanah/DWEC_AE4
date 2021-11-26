@@ -1,10 +1,15 @@
-import { enviarRequest } from "./util/util.js";
+import * as util from "./util.js";
+/*
+ * Este archivo contiene funciones relacionadas con la carga de datos
+ * de la pagina con javascript puro, necesarias para los requerimientos
+ * 1 y 2 de la actividad
+ */
 
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
   para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
   modifica la seleccion). La recogida de informacion se ejecutara cada vez que se ejecute el
-  script (en este caso, cada vez que se recarga la pagina)
+  script (en este caso, cada vez que se recarga la pagina o se pulsa el boton de Refrescar)
 */
 let infoPizza;
 let ingredientes;
@@ -15,8 +20,8 @@ let ingredientes;
  */
 export const cargarDatos = async () => {
   //obtenemos los datos del servidor
-  infoPizza = await enviarRequest("GET", "../server/pizzas.json");
-  ingredientes = await enviarRequest("GET", "../server/ingredientes.json");
+  infoPizza = await util.enviarRequest("GET", "../server/pizzas.json");
+  ingredientes = await util.enviarRequest("GET", "../server/ingredientes.json");
 
   // llamamos a las funciones que cargaran los nodos html
   cargarIngredientes(ingredientes);
@@ -29,9 +34,12 @@ export const cargarDatos = async () => {
  * funcion que carga los ingredientes en la lista de chekboxes
  */
 const cargarIngredientes = (listaIngredientes) => {
+  //eliminamos la lista de ingredientes existente
+  const ingredientesNode = document.getElementById("ingredientes");
+  util.limpiarNodo(ingredientesNode, "div");
+
   // iteramos por la lista de ingredientes, generando los elementos
   // en la seccion de ingredientes del html
-  const ingredientesNode = document.getElementById("ingredientes");
   listaIngredientes.forEach((ingrediente) => {
     //creamos wrapper usado para el formato de css aplicado
     const divWrapper = document.createElement("div");
@@ -59,8 +67,10 @@ const cargarIngredientes = (listaIngredientes) => {
 };
 
 const cargarMasas = (listaMasa) => {
-  //cargamos la lista de masas del servidor
+  //eliminamos la lista de ingredientes existente
   const masaNode = document.getElementById("masa");
+  util.limpiarNodo(masaNode, "div");
+
   listaMasa.forEach((masas) => {
     const divWrapper = document.createElement("div");
     divWrapper.className = "inline-column";
@@ -87,7 +97,10 @@ const cargarMasas = (listaMasa) => {
 };
 
 const cargarTamanios = (listaTamanios) => {
+  //eliminamos la lista de ingredientes existente
   const tamaniosNode = document.getElementById("tamanio");
+  util.limpiarNodo(tamaniosNode, "div");
+
   listaTamanios.forEach((tamanios) => {
     const divWrapper = document.createElement("div");
     divWrapper.className = "inline-column";

@@ -1,5 +1,5 @@
-// import { cargarDatos, calcularPrecio } from "./cargarDatos.js"; // funciones que rellenaran el html con la informacion del servidor
-import { cargarDatos, calcularPrecio } from "./cargarDatos.jquery.js"; // funciones que rellenaran el html con la informacion del servidor
+import { cargarDatos, calcularPrecio } from "./cargarDatos.js"; // funciones que rellenaran el html con la informacion del servidor
+// import { cargarDatos, calcularPrecio } from "./cargarDatos.jquery.js"; // funciones que rellenaran el html con la informacion del servidor
 
 window.onload = function () {
   // cargamos la pagina con los datos del servidor antes
@@ -48,7 +48,6 @@ window.onload = function () {
 
     //validacion inmediata de los radio button TAMANIO
     //y actualizacion del precio
-
     const tamanioRadioButton = document.getElementsByName("tamanios");
     for (var i = 0; i < tamanioRadioButton.length; i++) {
       tamanioRadioButton[i].addEventListener("click", validarTamanio);
@@ -65,7 +64,7 @@ window.onload = function () {
     //recarga de la pagina a partir del boton de refrescar
     const refrescar = document.getElementById("refrescar");
     refrescar.addEventListener("click", () => {
-      location.reload();
+      cargarDatos();
     });
   });
 };

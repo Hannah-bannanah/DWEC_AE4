@@ -1,14 +1,26 @@
 let listaRestaurantes = []; //variable que contendra los restaurantes
 let infoWindow = null; //ventana de información que se abrirá al clickear sobre un restaurante
 
+// /**
+//  * Funcion que carga la lista de restaurantes y
+//  * desata la carga del mapa
+//  */
+// function initMap() {
+//   enviarRequest("GET", "../server/restaurantes.json") //obtenemos la lista de restaurantes
+//     .then((restaurantes) => {
+//       listaRestaurantes = restaurantes;
+//       navigator.geolocation.getCurrentPosition(myMapExec); //cargamos el mapa centrado en la posicion del usuario
+//     });
+// }
+
 /**
  * Funcion que carga la lista de restaurantes y
  * desata la carga del mapa
  */
 function initMap() {
-  import("./util/util.js") //importamos el módulo de utilidades
+  import("./util.js") //importamos el módulo de utilidades
     .then((mod) => {
-      return mod.enviarRequest("GET", "../server/restaurantes.json"); //obtenemos la lista de restaurantes
+      return mod.enviarRequest("GET", "./server/restaurantes.json"); //obtenemos la lista de restaurantes
     })
     .then((restaurantes) => {
       listaRestaurantes = restaurantes;
@@ -85,3 +97,24 @@ const seleccionarRestaurante = (nombre) => {
     .querySelector(`option[value=${restaurante.id}]`);
   nodoRestaurante.selected = true;
 };
+
+/**
+ * Funcion que lanza una peticion al servidor y devuelve la respuesta
+ * @param {*} method metodo http usado
+ * @param {*} path ruta al archivo
+ */
+function enviarRequest(method, path) {
+  // envolvemos la funcion en una Promise para poder usarla en funciones
+  // en combinacion con then() o await
+  const promise = new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, path, true);
+    xhr.onload = function () {
+      if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
+      else reject(xhr.response);
+    };
+
+    xhr.send();
+  });
+  return promise;
+}
