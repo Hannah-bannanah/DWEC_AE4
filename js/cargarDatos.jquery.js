@@ -80,12 +80,70 @@ const cargarIngredientes = (listaIngredientes) => {
   });
 };
 
+/**
+ * funcion que carga los tipos de masa en la lista de radio buttons
+ */
 const cargarMasas = (listaMasas) => {
   console.log("listaMasas", listaMasas);
+  const masaNode = $("#masa");
+  //Iteramos por la lista de tipos de masa (seccion #masa)
+  $.each(listaMasas, (index, masa) => {
+  //Creamos el wrapper para cada radio button
+  const divWrapperMasa = $("<div>");
+  divWrapperMasa.addClass("inline-column");
+  divWrapperMasa.appendTo(masaNode); 
+  //generamos el id
+  const idMasa = `mas-${masa}`;
+  //generamos los radio buttons y añadimos los atributos
+  const rbmasa = $("<input>").attr({
+    "type" : "radio",
+    "id": idMasa,
+    "name": "masa",
+    "value": masa,
+  }) 
+  //situamos la sección de radio buttons en el documento
+  rbmasa.appendTo(divWrapperMasa);
+  //creamos la label
+  const etiquetaMasa = $("<label>");
+  etiquetaMasa.attr("for", idMasa); //usamos attr() en vez de setAttribute()
+  etiquetaMasa.text(masa); //usamos text() en vez de textContent
+  //situamos la label en el documento
+  divWrapperMasa.append(etiquetaMasa);
+  });
 };
 
+
+/**
+ * funcion que carga los tamaños de pizza en la lista de radio buttons
+ */
 const cargarTamanios = (listaTamanios) => {
   console.log("listaTamanios", listaTamanios);
+  const tamaniosNode = $("#tamanio");
+  //Iteramos por la lista de tipos de masa (seccion #masa)
+  $.each(listaTamanios, (index, tamanio) => {
+  //Creamos el wrapper para cada radio button
+  const divWrapperTamanio = $("<div>");
+  divWrapperTamanio.addClass("inline-column");
+  divWrapperTamanio.appendTo(tamaniosNode); 
+  //generamos el id
+  const idTamanio = `tam-${tamanio.nombre}`;
+  //generamos los radio buttons y añadimos los atributos
+  const rbtam = $("<input>").attr({
+    "type" : "radio",
+    "id": idTamanio,
+    "name": "tamanios",
+    "value": tamanio.nombre,
+  }) 
+  //situamos la sección de radio buttons en el documento
+  rbtam.appendTo(divWrapperTamanio);
+  //creamos la label
+  const etiquetaTam = $("<label>");
+  etiquetaTam.attr("for", idTamanio); //usamos attr() en vez de setAttribute()
+  etiquetaTam.text(tamanio.nombre); //usamos text() en vez de textContent
+  //situamos la label en el documento
+  divWrapperTamanio.append(etiquetaTam);
+  });
+
 };
 
 /*
