@@ -7,33 +7,17 @@
 let infoPizza;
 let ingredientes;
 
-// export const cargarDatos = async () => {
-//   // no necesitamos esperar a que el servidor devuelva la lista
-//   // de ingredientes antes de solicitar la lista de pizzas
-//   // si fuera necesario, deberiamos encadenar las peticiones.
-//   $.get("../server/ingredientes.json")
-//     .done((response) => {
-//       ingredientes = response;
-//       // console.log("ingredientes", ingredientes);
-//       cargarIngredientes(ingredientes);
-//     })
-//     .fail((err) => alert(err));
-//   $.get("../server/pizzas.json")
-//     .done((response) => {
-//       infoPizza = response;
-//       // console.log('infoPizza', infoPizza);
-//       cargarMasas(infoPizza.masas);
-//       cargarTamanios(infoPizza.tamanios);
-//     })
-//     .fail((err) => alert(err));
-// };
-
+/**
+ * funcion que obtiene los datos del servidor
+ * y carga los elementos relevantes de la pagina
+ * @returns el array de ingredientes
+ */
 export const cargarDatos = async () => {
-  // no necesitamos esperar a que el servidor devuelva la lista
-  // de ingredientes antes de solicitar la lista de pizzas
-  // si fuera necesario, deberiamos encadenar las peticiones.
-  return $.get("../server/ingredientes.json")
+  // encandenamos las requests para asegurarnos de que
+  //solo devolvemos el resultado cuando ambas se han resuelto
+  return $.get("../server/ingredientes.json") //usamos $.get() en vez de la clase XMLHttpRequest
     .done((response) => {
+      //usamos done() para evitar problemas de asyncronia
       ingredientes = response;
       cargarIngredientes(ingredientes);
       $.get("../server/pizzas.json").done((response) => {
@@ -51,7 +35,7 @@ export const cargarDatos = async () => {
 const cargarIngredientes = (listaIngredientes) => {
   // iteramos por la lista de ingredientes, generando los elementos
   // en la seccion de ingredientes del html
-  const ingredientesNode = $("#ingredientes"); //generamos todos los nodos con jquery
+  const ingredientesNode = $("#ingredientes"); // obtenemos y generamos todos los nodos con jquery
   $.each(listaIngredientes, (idx, ingrediente) => {
     //usamos el metodo $.each() en vez de forEach()
     //creamos wrapper usado para el formato de css aplicado
@@ -158,29 +142,29 @@ export function calcularPrecio() {
   let precio = 0;
 
   //calculamos el precio del tamanio elegido
-  const tamanioElegido = document.querySelector(
-    'input[name="tamanios"]:checked'
-  );
-  if (tamanioElegido != null)
+  const tamanioElegido = $('input[name="tamanios"]:checked');
+  //usamos tamnioElegido.length en vez de tamanioElegido para evaluar si se ha elegido un tamanio
+  //ya que con jquery se crea un objeto en todo caso
+  if (tamanioElegido.length != 0)
     precio += infoPizza.tamanios.find(
       (tam) => tam.nombre === tamanioElegido.value //buscamos el tamanio cuyo nombre coincide con el elegido
     ).precio;
 
   //calculamos el precio de los ingredientes
-  const ingredientesElegidos = document.querySelectorAll(
+  const ingredientesElegidos = $(
     '#opciones-pizza input[type="checkbox"]:checked'
   );
-  ingredientesElegidos.forEach((ingElegido) => {
-    console.log("ingredientes", ingredientes);
+  $.each(ingredientesElegidos, (idx, ingElegido) => {
+    //usamos $.each en vez de forEach()
     precio += ingredientes.find(
       (ing) => ing.nombre.split(" ").join("") === ingElegido.name
     ).precio;
   });
 
   //actualizamos el precio mostrado
-  const infoPrecio = document.getElementById("info-precio");
-  infoPrecio.textContent = `Precio: ${precio}\u20AC`;
-  infoPrecio.classList.add("visible");
+  const infoPrecio = $("#info-precio");
+  infoPrecio.text(`Precio: ${precio}\u20AC`); //usamos text() en vez de textContent
+  infoPrecio.addClass("visible"); //usamos addClass() en vez de classList().add()
 
   return precio;
 }

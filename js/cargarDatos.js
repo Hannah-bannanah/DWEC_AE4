@@ -9,14 +9,22 @@ import { enviarRequest } from "./util/util.js";
 let infoPizza;
 let ingredientes;
 
+/**
+ * funcion que obtiene los datos del servidor
+ * y carga los elementos relevantes de la pagina
+ */
 export const cargarDatos = async () => {
+  //obtenemos los datos del servidor
   infoPizza = await enviarRequest("GET", "../server/pizzas.json");
   ingredientes = await enviarRequest("GET", "../server/ingredientes.json");
+
+  // llamamos a las funciones que cargaran los nodos html
   cargarIngredientes(ingredientes);
   cargarMasas(infoPizza.masas);
   cargarTamanios(infoPizza.tamanios);
   return;
 };
+
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
  */
