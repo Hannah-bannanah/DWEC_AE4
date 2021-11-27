@@ -96,6 +96,7 @@ const seleccionarRestaurante = (nombre) => {
     .getElementById("restaurante")
     .querySelector(`option[value=${restaurante.id}]`);
   nodoRestaurante.selected = true;
+  import("./validacion.js").then((mod) => mod.validarRestaurante());
 };
 
 /**

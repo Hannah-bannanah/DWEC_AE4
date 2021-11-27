@@ -1,10 +1,22 @@
 import { limpiarNodo } from "./util.js";
+import * as validacion from "./validacion.js";
 /*
  * Este archivo contiene funciones relacionadas con la carga de datos
  * de la pagina con jquery, necesarias para el requerimiento
  * 3 de la actividad
  */
 
+$(document).ready(() => {
+  //usamos $(document).ready() en vez de window.onload
+  //carga inicial de la pagina
+  $.when(cargarDatos()).then(() => {
+    //recarga de la pagina a partir del boton de refrescar
+    const refrescar = $("#refrescar"); //usamos notacion de jQuery para obtener elementos
+    refrescar.click(cargarDatos); //usamos notacion de jQuery para los event listeners
+
+    aniadirEventListeners();
+  });
+});
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
   para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
@@ -19,7 +31,7 @@ let ingredientes;
  * y carga los elementos relevantes de la pagina
  * @returns el array de ingredientes
  */
-export const cargarDatos = async () => {
+const cargarDatos = async () => {
   // envolvemos las requests en un when para asegurarnos de que
   //solo devolvemos el resultado cuando ambas se han resuelto
   return $.when(
@@ -180,3 +192,61 @@ export function calcularPrecio() {
 
   return precio;
 }
+
+const aniadirEventListeners = () => {
+  // asignamos los event listeners
+  //validacion del formulario completo
+  $("#submit").click(validacion.validarFormulario);
+
+  //validacion inmediata de nombre
+  $("#nombre").keyup(validacion.validarNombre);
+
+  //validacion inmediata de apellidos
+  $("#apellidos").keyup(validacion.validarApellidos);
+
+  //validacion inmediata de la direccion
+  $("#ConText2").keyup(function () {
+    var direccion = document.getElementById("ConText2");
+    var mensajeErrorDireccion = document.querySelector(".direccion-error");
+    if (direccion.classList.contains("invalido")) {
+      direccion.classList.remove("invalido");
+      mensajeErrorDireccion.textContent = "";
+    }
+  });
+
+  //validacion inmediata del telefono
+  $("#telefono").keyup(validacion.validarTlf);
+
+  //validacion inmediata del email
+  $("#email").keyup(validacion.validarEmail);
+
+  // validacion inmediata del minimo de ingredientes
+  //y actualizacion del precio
+  const ingredientesChkboxes = $('#ingredientes input[type="checkbox"]'); //esto devuelve un array
+  $.each(ingredientesChkboxes, (idx, chkbox) => {
+    $(chkbox).change(validacion.validarMinIngredientes);
+    $(chkbox).change(calcularPrecio);
+  });
+  // console.dir(ingredientesChkboxes);
+
+  //validacion inmediata de los radio button MASA
+  const masaRadioButton = $("[name='masas']"); //cambiamos getElementsByName por un selector equivalente
+  for (var i = 0; i < masaRadioButton.length; i++) {
+    $(masaRadioButton[i]).click(validacion.validarMasa);
+  }
+
+  //validacion inmediata de los radio button TAMANIO
+  //y actualizacion del precio
+  const tamanioRadioButton = $("[name='tamanios']");
+  for (var i = 0; i < tamanioRadioButton.length; i++) {
+    $(tamanioRadioButton[i]).click(validacion.validarTamanio);
+    $(tamanioRadioButton[i]).change(calcularPrecio);
+  }
+
+  // validacion inmediata de seleccion de restaurante
+  $("#restaurante").change(validacion.validarRestaurante); //valida cada vez que cambia la seleccion
+
+  //validacion inmediata de los terminos y condiciones
+  const terminos = $("#terminos");
+  terminos.click(validacion.validarTerminos);
+};
