@@ -6,16 +6,10 @@ import * as validacion from "./validacion.js";
  * 3 de la actividad
  */
 
+//usamos $(document).ready() en vez de window.onload
 $(document).ready(() => {
-  //usamos $(document).ready() en vez de window.onload
   //carga inicial de la pagina
-  $.when(cargarDatos()).then(() => {
-    //recarga de la pagina a partir del boton de refrescar
-    const refrescar = $("#refrescar"); //usamos notacion de jQuery para obtener elementos
-    refrescar.click(cargarDatos); //usamos notacion de jQuery para los event listeners
-
-    aniadirEventListeners();
-  });
+  $.when(cargarDatos()).then(aniadirEventListeners);
 });
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
@@ -249,4 +243,8 @@ const aniadirEventListeners = () => {
   //validacion inmediata de los terminos y condiciones
   const terminos = $("#terminos");
   terminos.click(validacion.validarTerminos);
+
+  //recarga de la pagina a partir del boton de refrescar
+  const refrescar = $("#refrescar"); //usamos notacion de jQuery para obtener elementos
+  refrescar.click(cargarDatos); //usamos notacion de jQuery para los event listeners
 };

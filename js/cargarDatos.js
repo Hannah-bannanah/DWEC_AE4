@@ -5,15 +5,7 @@ import * as validacion from "./validacion.js";
  * de la pagina con javascript puro, necesarias para los requerimientos
  * 1 y 2 de la actividad
  */
-
-window.onload = () => {
-  //carga inicial de la pagina
-  cargarDatos();
-
-  //recarga de la pagina a partir del boton de refrescar
-  const refrescar = document.getElementById("refrescar");
-  refrescar.addEventListener("click", cargarDatos);
-};
+window.onload = cargarDatos;
 
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
@@ -28,7 +20,7 @@ let ingredientes;
  * funcion que obtiene los datos del servidor
  * y carga los elementos relevantes de la pagina
  */
-const cargarDatos = async () => {
+async function cargarDatos() {
   //obtenemos los datos del servidor
   infoPizza = await util.enviarRequest("GET", "../server/pizzas.json");
   ingredientes = await util.enviarRequest("GET", "../server/ingredientes.json");
@@ -39,7 +31,7 @@ const cargarDatos = async () => {
   cargarTamanios(infoPizza.tamanios);
 
   aniadirEventListeners();
-};
+}
 
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
@@ -230,4 +222,8 @@ const aniadirEventListeners = () => {
   //validacion inmediata de los terminos y condiciones
   const terminos = document.getElementById("terminos");
   terminos.addEventListener("click", validacion.validarTerminos);
+
+  //recarga de la pagina a partir del boton de refrescar
+  const refrescar = document.getElementById("refrescar");
+  refrescar.addEventListener("click", cargarDatos);
 };
