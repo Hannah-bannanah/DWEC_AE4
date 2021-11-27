@@ -12,9 +12,7 @@ window.onload = () => {
 
   //recarga de la pagina a partir del boton de refrescar
   const refrescar = document.getElementById("refrescar");
-  refrescar.addEventListener("click", () => {
-    cargarDatos();
-  });
+  refrescar.addEventListener("click", cargarDatos);
 };
 
 /* 
