@@ -137,7 +137,7 @@ const cargarTamanios = (listaTamanios) => {
  * la cantidad de ingredientes y el tamanio elegidos
  * @returns el precio
  */
-function calcularPrecio() {
+export function calcularPrecio() {
   let precio = 0;
   //calculamos el precio del tamanio elegido
   const tamanioElegido = document.querySelector(
@@ -168,29 +168,29 @@ function calcularPrecio() {
 
 const aniadirEventListeners = () => {
   // asignamos los event listeners
-  submit.addEventListener("click", validacion.validarFormulario); //validacion del formulario completo
+  submit.onclick = validacion.validarFormulario; //validacion del formulario completo
 
   //validacion inmediata de nombre
-  nombre.addEventListener("keyup", validacion.validarNombre);
+  nombre.onkeyup = validacion.validarNombre;
 
   //validacion inmediata de apellidos
-  apellidos.addEventListener("keyup", validacion.validarApellidos);
+  apellidos.onkeyup = validacion.validarApellidos;
 
   //validacion inmediata de la direccion
-  ConText2.addEventListener("keyup", function () {
+  ConText2.onkeyup = function () {
     var direccion = document.getElementById("ConText2");
     var mensajeErrorDireccion = document.querySelector(".direccion-error");
     if (direccion.classList.contains("invalido")) {
       direccion.classList.remove("invalido");
       mensajeErrorDireccion.textContent = "";
     }
-  });
+  };
 
   //validacion inmediata del telefono
-  telefono.addEventListener("keyup", validacion.validarTlf);
+  telefono.onkeyup = validacion.validarTlf;
 
   //validacion inmediata del email
-  email.addEventListener("keyup", validacion.validarEmail);
+  email.onkeyup = validacion.validarEmail;
 
   // validacion inmediata del minimo de ingredientes
   //y actualizacion del precio
@@ -198,8 +198,8 @@ const aniadirEventListeners = () => {
     '#opciones-pizza input[type="checkbox"]'
   );
   ingredientesChkboxes.forEach((chkbox) => {
-    chkbox.addEventListener("change", validacion.validarMinIngredientes);
     chkbox.onchange = calcularPrecio;
+    chkbox.addEventListener("change", validacion.validarMinIngredientes);
   });
 
   //validacion inmediata de los radio button MASA
@@ -212,8 +212,8 @@ const aniadirEventListeners = () => {
   //y actualizacion del precio
   const tamanioRadioButton = document.getElementsByName("tamanios");
   for (var i = 0; i < tamanioRadioButton.length; i++) {
-    tamanioRadioButton[i].addEventListener("click", validacion.validarTamanio);
     tamanioRadioButton[i].onchange = calcularPrecio;
+    tamanioRadioButton[i].addEventListener("click", validacion.validarTamanio);
   }
 
   // validacion inmediata de seleccion de restaurante
@@ -221,9 +221,9 @@ const aniadirEventListeners = () => {
 
   //validacion inmediata de los terminos y condiciones
   const terminos = document.getElementById("terminos");
-  terminos.addEventListener("click", validacion.validarTerminos);
+  terminos.onclick = validacion.validarTerminos;
 
   //recarga de la pagina a partir del boton de refrescar
   const refrescar = document.getElementById("refrescar");
-  refrescar.addEventListener("click", cargarDatos);
+  refrescar.onclick = cargarDatos;
 };
