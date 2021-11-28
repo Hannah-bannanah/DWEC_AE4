@@ -7,10 +7,8 @@ import * as validacion from "./validacion.js";
  */
 
 //usamos $(document).ready() en vez de window.onload
-$(document).ready(() => {
-  //carga inicial de la pagina
-  cargarDatos();
-});
+$(document).ready(cargarDatos);
+
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
   para evitar sobrecarga (ya que el calculo de precio se realiza cada vez que el usuario
@@ -25,7 +23,7 @@ let ingredientes;
  * y carga los elementos relevantes de la pagina
  * @returns el array de ingredientes
  */
-const cargarDatos = async () => {
+function cargarDatos() {
   // envolvemos las requests en un when para asegurarnos de que
   //solo devolvemos el resultado cuando ambas se han resuelto
   return $.when(
@@ -43,7 +41,7 @@ const cargarDatos = async () => {
 
     aniadirEventListeners();
   });
-};
+}
 
 /**
  * funcion que carga los ingredientes en la lista de chekboxes
