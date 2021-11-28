@@ -166,6 +166,10 @@ export function calcularPrecio() {
   return precio;
 }
 
+/**
+ * Funcion que aniade los eventListeners a todos los
+ * elementos del formulario
+ */
 const aniadirEventListeners = () => {
   // asignamos los event listeners
   submit.onclick = validacion.validarFormulario; //validacion del formulario completo

@@ -1,5 +1,5 @@
-// import { calcularPrecio } from "./cargarDatos.js";
-import { calcularPrecio } from "./cargarDatos.jquery.js";
+import { calcularPrecio } from "./cargarDatos.js";
+// import { calcularPrecio } from "./cargarDatos.jquery.js";
 /*
  *============= Validacion formulario =============
  */
