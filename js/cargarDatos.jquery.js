@@ -9,7 +9,7 @@ import * as validacion from "./validacion.js";
 //usamos $(document).ready() en vez de window.onload
 $(document).ready(() => {
   //carga inicial de la pagina
-  $.when(cargarDatos()).then(aniadirEventListeners);
+  cargarDatos();
 });
 /* 
   definimos las variables donde recogeremos la informacion relevante a nivel global
@@ -40,6 +40,8 @@ const cargarDatos = async () => {
     cargarIngredientes(ingredientes);
     cargarMasas(infoPizza.masas);
     cargarTamanios(infoPizza.tamanios);
+
+    aniadirEventListeners();
   });
 };
 
@@ -190,34 +192,37 @@ export function calcularPrecio() {
 const aniadirEventListeners = () => {
   // asignamos los event listeners
   //validacion del formulario completo
-  $("#submit").click(validacion.validarFormulario);
+  $("#submit").unbind().click(validacion.validarFormulario); //necesitamos eliminar el event listener anterior
 
   //validacion inmediata de nombre
-  $("#nombre").keyup(validacion.validarNombre);
+  $("#nombre").unbind().keyup(validacion.validarNombre);
 
   //validacion inmediata de apellidos
-  $("#apellidos").keyup(validacion.validarApellidos);
+  $("#apellidos").unbind().keyup(validacion.validarApellidos);
 
   //validacion inmediata de la direccion
-  $("#ConText2").keyup(function () {
-    var direccion = document.getElementById("ConText2");
-    var mensajeErrorDireccion = document.querySelector(".direccion-error");
-    if (direccion.classList.contains("invalido")) {
-      direccion.classList.remove("invalido");
-      mensajeErrorDireccion.textContent = "";
-    }
-  });
+  $("#ConText2")
+    .unbind()
+    .keyup(function () {
+      var direccion = document.getElementById("ConText2");
+      var mensajeErrorDireccion = document.querySelector(".direccion-error");
+      if (direccion.classList.contains("invalido")) {
+        direccion.classList.remove("invalido");
+        mensajeErrorDireccion.textContent = "";
+      }
+    });
 
   //validacion inmediata del telefono
-  $("#telefono").keyup(validacion.validarTlf);
+  $("#telefono").unbind().keyup(validacion.validarTlf);
 
   //validacion inmediata del email
-  $("#email").keyup(validacion.validarEmail);
+  $("#email").unbind().keyup(validacion.validarEmail);
 
   // validacion inmediata del minimo de ingredientes
   //y actualizacion del precio
   const ingredientesChkboxes = $('#ingredientes input[type="checkbox"]'); //esto devuelve un array
   $.each(ingredientesChkboxes, (idx, chkbox) => {
+    $(chkbox).unbind();
     $(chkbox).change(validacion.validarMinIngredientes);
     $(chkbox).change(calcularPrecio);
   });
@@ -233,6 +238,7 @@ const aniadirEventListeners = () => {
   //y actualizacion del precio
   const tamanioRadioButton = $("[name='tamanios']");
   for (var i = 0; i < tamanioRadioButton.length; i++) {
+    $(tamanioRadioButton[i]).unbind();
     $(tamanioRadioButton[i]).click(validacion.validarTamanio);
     $(tamanioRadioButton[i]).change(calcularPrecio);
   }
@@ -242,9 +248,9 @@ const aniadirEventListeners = () => {
 
   //validacion inmediata de los terminos y condiciones
   const terminos = $("#terminos");
-  terminos.click(validacion.validarTerminos);
+  terminos.unbind().click(validacion.validarTerminos);
 
   //recarga de la pagina a partir del boton de refrescar
   const refrescar = $("#refrescar"); //usamos notacion de jQuery para obtener elementos
-  refrescar.click(cargarDatos); //usamos notacion de jQuery para los event listeners
+  refrescar.unbind().click(cargarDatos); //usamos notacion de jQuery para los event listeners
 };
